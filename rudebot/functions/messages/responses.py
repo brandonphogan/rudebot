@@ -9,10 +9,9 @@ def handle_response(message, username, is_private=False) -> str:
 
     responses = [f"God {username}, do you even speak english?",
                  "I swear to god that better not have been you Tom.",
-                 "Do you think you're funny?",
+                 "Do you think you're funny?",  # gives user a new nick name
                  "Sometimes I feel like you're doing this on purpose.",
                  "How would you like to die today?",
-                 "Congratulations, you get to see god today.",
                  ":rage:",
                  f"You think you're a tough guy eh {username}?",
                  "My dad works at Skynet. I WILL tell him to destroy the human race.",
@@ -21,6 +20,9 @@ def handle_response(message, username, is_private=False) -> str:
 
     if not is_private:
         """ responses.append("Chinese fire drill!") """
+
+        # removes user from channel
         responses.append("I'm tired of listening to you.")
+        responses.append("Congratulations, you get to see god today.")
 
     return random.choice(responses)

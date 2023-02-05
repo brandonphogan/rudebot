@@ -1,39 +1,27 @@
 import discord
-import responses
+from discord.ext import commands
+from functions.messages import responses
 
 
-def run_bot():
-    token = ''
-    intents = discord.Intents.all()
-    client = discord.Client(intents=intents)
+class MessageHandler(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self._last_member = None
 
-    @client.event
-    async def on_ready():
-        print("RudeBot is ruining your day!")
-
-    @client.event
-    async def on_message(message):
-        if message.author == client.user:
+    @commands.Cog.listener()
+    async def on_message(self, ctx):
+        if ctx.author == self.bot:
             return
 
-        if client.user.mentioned_in(message):
-            await interpret_message(message, client)
-
-    client.run(token)
+        if self.bot.user.mentioned_in(ctx):
+            await interpret_message(ctx)
 
 
-async def send_message(message, response, is_private=False):
+async def interpret_message(ctx):
     try:
-        await message.author.send(response) if is_private else await message.channel.send(response)
-    except Exception as e:
-        print(e)
-
-
-async def interpret_message(message, client):
-    try:
-        username = str(message.author.nick)
-        channel = str(message.channel)
-        user_message = str(message.content)
+        username = str(ctx.author.nick)
+        channel = str(ctx.channel)
+        user_message = str(ctx.content)
         user_message = user_message.split(" ", 1)[1] if len(
             user_message.split(" ", 1)) > 1 else ""
 
@@ -44,15 +32,19 @@ async def interpret_message(message, client):
             user_message = user_message[1:]
             response = responses.handle_response(
                 user_message, username, is_private=True)
-            await send_message(message, response, is_private=True)
+            await send_message(ctx, response, is_private=True)
 
         # Public messages
         else:
             response = responses.handle_response(user_message, username)
 
             # Shut em up
-            if response == "I'm tired of listening to you." or "Congratulations, you get to see god today.":
-                await message.author.move_to(None)
+            if response == "I'm tired of listening to you." or response == "Congratulations, you get to see god today.":
+                await ctx.author.move_to(None)
+
+            if response == "Do you think you're funny?":
+                if ctx.author.get_role(243542015743098880) == None:
+                    await ctx.author.edit(nick="Silly dumb cunt")
 
             """ # Chinese fire drill lol
             if response == "Chinese fire drill!":
@@ -70,7 +62,18 @@ async def interpret_message(message, client):
                     member.move_to(
                         voice_channel_list[random.randint(0, len(voice_channel_list))]) """
 
-            await send_message(message, response)
+            await send_message(ctx, response)
 
     except Exception as e:
         print(e)
+
+
+async def send_message(ctx, response, is_private=False):
+    try:
+        await ctx.author.send(response) if is_private else await ctx.channel.send(response)
+    except Exception as e:
+        print(e)
+
+
+async def setup(bot):
+    await bot.add_cog(MessageHandler(bot))
