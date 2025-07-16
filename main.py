@@ -1,7 +1,9 @@
-from bot.rude_bot import RudeBot
 import logging
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+
+from bot.rude_bot import RudeBot
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')

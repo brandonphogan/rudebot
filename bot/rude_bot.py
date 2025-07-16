@@ -1,5 +1,7 @@
 import discord
+
 from discord.ext import commands
+
 from bot.greeting_manager import GreetingManager
 
 class RudeBot:
