@@ -1,4 +1,5 @@
 import discord
+import random
 
 from discord.ext import commands
 
@@ -150,7 +151,8 @@ class RudeBot:
 			# Safely get text, emote, and gif_url with defaults
 			text = greeting.get("text", "")
 			emote = greeting.get("emote", "")
-			gif_url = greeting.get("gif_url")
+			gif_url = greeting.get("gif_url", "")
+			action = greeting.get("action", "")
 
 			# Append member mention and greeting parts
 			message_parts = [ctx.author.mention]
@@ -164,9 +166,26 @@ class RudeBot:
 			# Send the text + emote message if there is any text or emote
 			if text or emote:
 				await ctx.send(message_text)
-			else:
-				# If no text or emote, just mention the user
-				await ctx.send(ctx.author.mention)
+
+			# Perform the action
+			if action:
+				match action.lower():
+					case "kick":
+						if ctx.author.voice and ctx.author.voice.channel:
+							await ctx.author.move_to(None, reason=None)
+					case "scatter":
+						# Get the voice channel of the command author
+						current_vc = ctx.author.voice.channel if ctx.author.voice else None
+						if current_vc:
+							# Get all other voice channels excluding current
+							other_vcs = [vc for vc in ctx.guild.voice_channels if vc != current_vc]
+							if other_vcs:
+								members = current_vc.members
+								if members:
+									# Shuffle and assign each member to a random other voice channel
+									for member in members:
+										target_vc = random.choice(other_vcs)
+										await member.move_to(target_vc)
 
 			# Send gif as separate message if applicable
 			if gif_url:
