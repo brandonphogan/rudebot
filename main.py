@@ -17,7 +17,6 @@ async def main():
 	# Get dcord info from .env
 	load_dotenv()
 	token = os.getenv('DISCORD_TOKEN')
-	text_channel_id = os.getenv('TEXT_CHANNEL_ID')
 
 	# Set intents
 	intents = discord.Intents.default()
@@ -25,9 +24,6 @@ async def main():
 	intents.message_content = True
 	intents.voice_states = True
 	intents.members = True
-
-	# Init log handler
-	handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
 	# Init bot
 	bot = commands.Bot(command_prefix="!", intents=intents)
