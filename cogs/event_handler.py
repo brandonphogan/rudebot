@@ -1,61 +1,79 @@
+"""
+Cog for handling Discord events in Rudebot.
+Currently greets users when they join a voice channel using a random event response.
+"""
 from discord.ext import commands
+import discord
+import os
+import random
+from db.models import Response
+from db.session import get_session
+from cogs.helpers.response_helper import BotResponse, send_response
+from cogs.helpers.logger_helper import get_logger
+from cogs.helpers.channel_helper import resolve_text_channel
 
 class EventHandler(commands.Cog):
-	def __init__(self, bot):
-		self.bot = bot
+    """
+    Handles Discord events such as on_ready and on_voice_state_update.
+    Sends greetings to users joining voice channels.
+    """
+    def __init__(self, bot):
+        self.bot = bot
+        # Read the text channel ID from the environment
+        self.text_channel_id = os.getenv('TEXT_CHANNEL_ID')
+        if self.text_channel_id:
+            try:
+                self.text_channel_id = int(self.text_channel_id)
+            except ValueError:
+                self.text_channel_id = None
+        # Set up a dedicated logger for this cog
+        self.logger = get_logger('event_handler', 'logs/event_handler.log')
 
-	@commands.Cog.listener()
-	async def on_ready(self):
-		print(f"Logged in as {self.bot.user.name} with ID {self.bot.user.id}")
+    @commands.Cog.listener()
+    async def on_ready(self):
+        """
+        Log when the bot is ready.
+        """
+        self.logger.info(f"Logged in as {self.bot.user.name} with ID {self.bot.user.id}")
+        print(f"Logged in as {self.bot.user.name} with ID {self.bot.user.id}")
 
-	@commands.Cog.listener()
-	async def on_voice_state_update(self):
-		"""
-		Triggers when a voice state changes.
-		Sends a random join greeting when a non-cogs member newly joins any voice channel.
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        """
+        Send a random event response when a non-bot member newly joins any voice channel.
+        """
+        try:
+            # Only act when a user joins a voice channel (not moves or leaves)
+            if before.channel is None and after.channel is not None:
+                if member.bot:
+                    return
+                # Resolve the text channel to send the greeting
+                text_channel = resolve_text_channel(member.guild, self.text_channel_id)
+                if not text_channel:
+                    self.logger.warning(f"No valid text channel found for guild {member.guild.id}")
+                    return
+                # Fetch a random event response from the database
+                with get_session() as session:
+                    responses = session.query(Response).filter_by(category='event', trigger='join').all()
+                    if not responses:
+                        self.logger.warning(f"No event responses found in database.")
+                        return
+                    response = random.choice(responses)
+                # Build the BotResponse dataclass
+                bot_response = BotResponse(
+                    text=response.text or "",
+                    gif_url=response.gif_url or "",
+                    action=response.action or None
+                )
+                # Send the greeting response
+                await send_response(
+                    text_channel,
+                    bot_response,
+                    logger=self.logger
+                )
+        except Exception as e:
+            self.logger.error(f"Error in on_voice_state_update: {e}", exc_info=True)
 
-		Parameters:
-			member (discord.Member): Discord member object
-		"""
-		"""# Check if user joined a voice channel
-		if before.channel is None and after.channel is not None:
-
-			# Ignore bots
-			if member.bot:
-				return
-
-			# Get the text channel
-			text_channel = member.guild.get_channel(self.text_channel_id)
-
-			if not text_channel:
-				return
-
-			# TODO: Move greeting logic to greeting manager
-			# Get random join greeting
-			greeting = self.greetingManager.get_random_join_greeting()
-
-			# Safely get text, emote, and gif_url with defaults
-			text = greeting.get("text", "")
-			emote = greeting.get("emote", "")
-			gif_url = greeting.get("gif_url")
-
-			# Append member mention and greeting parts
-			parts = [member.mention]
-			if text:
-				parts.append(text)
-			if emote:
-				parts.append(emote)
-
-			message = " ".join(parts)
-
-			# Send the text + emote message if there is any text or emote
-			await text_channel.send(message)
-
-			# Send gif as separate message if applicable
-			if gif_url:
-				embed = discord.Embed()
-				embed.set_image(url=gif_url)
-				await text_channel.send(embed=embed)"""
-
+# Required setup function for loading the cog
 async def setup(bot):
-	await bot.add_cog(EventHandler(bot))
+    await bot.add_cog(EventHandler(bot))

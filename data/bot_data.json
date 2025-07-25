@@ -1,0 +1,345 @@
+{
+  "responses": [
+    {
+      "id": 1,
+      "category": "command",
+      "trigger": "hello",
+      "text": "What do you want now?",
+      "gif_url": "",
+      "emote": "",
+      "action": ""
+    },
+    {
+      "id": 2,
+      "category": "command",
+      "trigger": "hello",
+      "text": "Ugh, it's you again.",
+      "gif_url": "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGx3d2xpZDdtajBjODU1cW55eXg4ZDM4ejhsMzB5bXFheGc1aWt3MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YVvTCqTBglkOs/giphy.gif",
+      "emote": "",
+      "action": ""
+    },
+    {
+      "id": 3,
+      "category": "command",
+      "trigger": "hello",
+      "text": "Didn't we just do this?",
+      "gif_url": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDJwY2d6bWQ4YmJoM2V6ajV4ODg3OWhxandhYTVhazAwY3F1bzI2ayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/600QaqOkDQnWo5Mau0/giphy.gif",
+      "emote": "",
+      "action": ""
+    },
+    {
+      "id": 4,
+      "category": "command",
+      "trigger": "hello",
+      "text": "You're the reason Discord has mute buttons.",
+      "gif_url": "",
+      "emote": "",
+      "action": ""
+    },
+    {
+      "id": 5,
+      "category": "command",
+      "trigger": "hello",
+      "text": "Touch grass nerd.",
+      "gif_url": "",
+      "emote": "",
+      "action": "kick"
+    },
+    {
+      "id": 6,
+      "category": "command",
+      "trigger": "hello",
+      "text": "Tom sucks.",
+      "gif_url": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTJvM3BpMjU0cHhoaW44MHc3ZnVkcXJoMXJ4ZWZ4Y2V3b2M5YzQxZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/cr9vIO7NsP5cY/giphy.gif",
+      "emote": "",
+      "action": ""
+    },
+    {
+      "id": 7,
+      "category": "command",
+      "trigger": "hello",
+      "text": "This is your fault and everybody will hate you.",
+      "gif_url": "",
+      "emote": "",
+      "action": "scatter"
+    },
+    {
+      "id": 8,
+      "category": "command",
+      "trigger": "joke",
+      "text": "Your mother.",
+      "gif_url": "",
+      "emote": "",
+      "action": ""
+    },
+    {
+      "id": 9,
+      "category": "event",
+      "trigger": "join",
+      "text": "Who let you in?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 10,
+      "category": "event",
+      "trigger": "join",
+      "text": "Glad I brought my ear plugs.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 11,
+      "category": "event",
+      "trigger": "join",
+      "text": "Oh... it\u2019s *you* again.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 12,
+      "category": "event",
+      "trigger": "join",
+      "text": "Don\u2019t you have anything better to do?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 13,
+      "category": "event",
+      "trigger": "join",
+      "text": "Wow, someone\u2019s desperate for attention.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 14,
+      "category": "event",
+      "trigger": "join",
+      "text": "Great, you\u2019re back. Just what we needed.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 15,
+      "category": "event",
+      "trigger": "join",
+      "text": "Ugh. You again?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 16,
+      "category": "event",
+      "trigger": "join",
+      "text": "What now?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 17,
+      "category": "event",
+      "trigger": "join",
+      "text": "I was having a good day, then you showed up.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 18,
+      "category": "event",
+      "trigger": "join",
+      "text": "Look who crawled out from under a rock.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 19,
+      "category": "event",
+      "trigger": "join",
+      "text": "Back for more, huh?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 20,
+      "category": "event",
+      "trigger": "join",
+      "text": "I didn\u2019t ask for your presence.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 21,
+      "category": "event",
+      "trigger": "join",
+      "text": "Oh great. *This* guy.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 22,
+      "category": "event",
+      "trigger": "join",
+      "text": "Go touch some grass.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 23,
+      "category": "event",
+      "trigger": "join",
+      "text": "You\u2019re like a recurring rash.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 24,
+      "category": "event",
+      "trigger": "join",
+      "text": "I thought we banned you.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 25,
+      "category": "event",
+      "trigger": "join",
+      "text": "I\u2019d say welcome back, but I\u2019d be lying.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 26,
+      "category": "event",
+      "trigger": "join",
+      "text": "Can we pretend you\u2019re not here?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 27,
+      "category": "event",
+      "trigger": "join",
+      "text": "Surprised your keyboard still works.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 28,
+      "category": "event",
+      "trigger": "join",
+      "text": "Your internet didn\u2019t do us the favor today, huh?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 29,
+      "category": "event",
+      "trigger": "join",
+      "text": "Guess who just ruined the vibe?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 30,
+      "category": "event",
+      "trigger": "join",
+      "text": "Wonderful. Just wonderful.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 31,
+      "category": "event",
+      "trigger": "join",
+      "text": "Every time you show up, a brain cell dies.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 32,
+      "category": "event",
+      "trigger": "join",
+      "text": "You sure you want to embarrass yourself again?",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 33,
+      "category": "event",
+      "trigger": "join",
+      "text": "That awkward moment when you think we missed you.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 34,
+      "category": "event",
+      "trigger": "join",
+      "text": "Quick! Someone act like we care.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    },
+    {
+      "id": 35,
+      "category": "event",
+      "trigger": "join",
+      "text": "Please let this be quick.",
+      "gif_url": "",
+      "emote": "",
+      "action": null
+    }
+  ],
+  "command_types": [
+    {
+      "id": 1,
+      "command_type": "join"
+    },
+    {
+      "id": 2,
+      "command_type": "joke"
+    },
+    {
+      "id": 3,
+      "command_type": "hello"
+    }
+  ],
+  "action_types": [
+    {
+      "id": 1,
+      "action_type": "scatter",
+      "description": null
+    },
+    {
+      "id": 2,
+      "action_type": "kick",
+      "description": null
+    }
+  ]
+}

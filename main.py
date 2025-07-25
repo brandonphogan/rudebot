@@ -1,3 +1,7 @@
+"""
+Main entry point for Rudebot Discord bot.
+Handles bot setup, cog loading, and startup/shutdown lifecycle.
+"""
 import discord
 from discord.ext import commands
 
@@ -6,34 +10,72 @@ import logging
 import os
 
 from dotenv import load_dotenv
+from utils.logging_config import setup_logging
 
-logging.basicConfig(
-    level=logging.INFO,  # Or DEBUG for more details
-    format='[%(asctime)s] [%(levelname)s] %(name)s: %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
+# Set up centralized logging for the project
+setup_logging()
+logger = logging.getLogger("main")
+
+def discover_cogs(base_dir='cogs'):
+    """
+    Discover all valid cog modules in the cogs directory (no subdirectories).
+    Only loads files that contain an async setup function.
+    """
+    cogs = []
+    for file in os.listdir(base_dir):
+        if file.endswith('.py') and file != '__init__.py' and not file.startswith('_'):
+            module = file[:-3]
+            abs_path = os.path.join(base_dir, file)
+            with open(abs_path, 'r', encoding='utf-8') as f:
+                if 'async def setup(' not in f.read():
+                    continue
+            cogs.append(f'cogs.{module}')
+    return cogs
 
 async def main():
-	# Get dcord info from .env
-	load_dotenv()
-	token = os.getenv('DISCORD_TOKEN')
+    """
+    Main async entry point for the bot.
+    Loads environment, sets up bot, loads cogs, and starts the bot.
+    """
+    # Load environment variables (including DISCORD_TOKEN)
+    load_dotenv()
+    token = os.getenv('DISCORD_TOKEN')
 
-	# Set intents
-	intents = discord.Intents.default()
-	intents.presences = True
-	intents.message_content = True
-	intents.voice_states = True
-	intents.members = True
+    # Set Discord bot intents
+    intents = discord.Intents.default()
+    intents.presences = True
+    intents.message_content = True
+    intents.voice_states = True
+    intents.members = True
 
-	# Init bot
-	bot = commands.Bot(command_prefix="!", intents=intents)
+    # Initialize the bot
+    bot = commands.Bot(command_prefix="!", intents=intents)
 
-	# Load cogs
-	for filename in os.listdir('./cogs'):
-		if filename.endswith('.py'):
-			await bot.load_extension(f'cogs.{filename[:-3]}')
+    # Load all cogs from the cogs directory
+    loaded_cogs = {}
+    for cog_name in discover_cogs():
+        try:
+            await bot.load_extension(cog_name)
+            logger.info(f"Loaded cog: {cog_name}")
+            loaded_cogs[cog_name] = 'Loaded'
+        except Exception as e:
+            logger.error(f"Failed to load cog: {cog_name} - {e}", exc_info=True)
+            loaded_cogs[cog_name] = f'Failed: {e}'
 
-	# Run bot
-	await bot.start(token)
+    # Log a summary of all loaded cogs
+    logger.info("Cog load summary:")
+    for cog, status in loaded_cogs.items():
+        logger.info(f"  {cog}: {status}")
 
-asyncio.run(main())
+    logger.info("Rudebot is starting up.")
+    try:
+        await bot.start(token)
+    except Exception as e:
+        logger.error(f"Bot encountered an exception: {e}", exc_info=True)
+        raise
+    finally:
+        logger.info("Rudebot is shutting down.")
+
+if __name__ == "__main__":
+    # Run the main async entry point
+    asyncio.run(main())
