@@ -6,8 +6,8 @@ from discord.ext import commands
 import discord
 import os
 import random
-from db.models import Response
-from db.session import get_session
+from data.models import Response
+from data.session import get_session
 from cogs.helpers.response_helper import BotResponse, send_response
 from cogs.helpers.logger_helper import get_logger
 from cogs.helpers.channel_helper import resolve_text_channel

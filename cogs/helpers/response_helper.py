@@ -6,8 +6,8 @@ import discord
 import logging
 from typing import Optional, Union, List
 from dataclasses import dataclass
-from db.models import Response
-from db.session import get_session
+from data.models import Response
+from data.session import get_session
 import random
 
 @dataclass

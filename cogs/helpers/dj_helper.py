@@ -4,8 +4,8 @@ Handles adding/removing songs, advancing queue, and cleaning up old history.
 """
 import time
 from typing import List, Optional
-from db.models import SongQueue
-from db.session import get_session
+from data.models import SongQueue
+from data.session import get_session
 import tempfile
 import os
 import yt_dlp

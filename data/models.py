@@ -1,6 +1,7 @@
 """
 SQLAlchemy ORM models for Rudebot.
 Includes unified Response model for all command and event responses.
+Updated for new data directory structure.
 """
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base

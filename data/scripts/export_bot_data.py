@@ -1,7 +1,8 @@
 import sqlite3
 import json
 
-DB_PATH = 'db/rudebot.sqlite3'
+# Database and export paths (updated for new data directory structure)
+DB_PATH = 'data/rudebot.sqlite3'
 EXPORT_PATH = 'data/bot_data.json'
 
 def export_all():

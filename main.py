@@ -1,6 +1,7 @@
 """
 Main entry point for Rudebot Discord bot.
 Handles bot setup, cog loading, and startup/shutdown lifecycle.
+Enhanced with improved error handling and logging.
 """
 import discord
 from discord.ext import commands

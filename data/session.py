@@ -2,7 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
 
-DB_PATH = 'db/rudebot.sqlite3'
+# Database path (updated for new data directory structure)
+DB_PATH = 'data/rudebot.sqlite3'
 engine = create_engine(
     f'sqlite:///{DB_PATH}',
     pool_size=10,
