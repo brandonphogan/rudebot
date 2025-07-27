@@ -1,20 +1,20 @@
 from discord.ext import commands
-from cogs.helpers.response_helper import BotResponse, send_response, get_random_response, format_response_text
-from cogs.helpers.action_helper import handle_action
-from cogs.helpers.logger_helper import get_logger
+from services.response_service import BotResponse, send_response, get_random_response, format_response_text
+from services.action_service import handle_action
+from utils.logging_util import get_logger
 
-class CommandHandler(commands.Cog):
+class Commands(commands.Cog):
     """
     Cog for handling text commands for the Discord bot.
     Includes custom help, hello, and joke commands.
-    Uses helpers for response formatting, sending, and action handling.
+    Uses services for response formatting, sending, and action handling.
     """
     def __init__(self, bot):
         self.bot = bot
         # Remove default help command to use custom help
         bot.help_command = None
         # Set up a dedicated logger for this cog
-        self.logger = get_logger('command_handler', 'logs/command_handler.log')
+        self.logger = get_logger('commands', 'logs/commands.log')
 
     @commands.command(name="help", help="Good lord do i have to explain this one???")
     async def help(self, ctx, *, command_name=None):
@@ -70,4 +70,4 @@ class CommandHandler(commands.Cog):
 
 # Required setup function for loading the cog
 async def setup(bot):
-    await bot.add_cog(CommandHandler(bot))
+    await bot.add_cog(Commands(bot))

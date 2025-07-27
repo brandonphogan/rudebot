@@ -1,10 +1,12 @@
 """
-Helpers for handling bot actions (e.g., kick, scatter) in Rudebot.
-Centralizes all action logic for use in cogs.
+Action service for Rudebot.
+Handles bot actions like kick and scatter operations.
+Separates business logic from Discord-specific cog implementation.
 """
 import random
 import discord
 import logging
+
 
 async def handle_action(action: str, ctx: discord.ext.commands.Context, logger: logging.Logger = None):
     """
@@ -36,4 +38,4 @@ async def handle_action(action: str, ctx: discord.ext.commands.Context, logger: 
                                 target_vc = random.choice(other_vcs)
                                 await member.move_to(target_vc)
                                 if logger:
-                                    logger.info(f"Scattered {member} to channel {target_vc.id} in guild {ctx.guild.id}") 
+                                    logger.info(f"Scattered {member} to channel {target_vc.id} in guild {ctx.guild.id}")

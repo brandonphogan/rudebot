@@ -2,7 +2,7 @@
 # Script to start Rudebot with environment validation and error handling
 set -e  # Exit on any error
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 # Colors for output
 RED='\033[0;31m'
@@ -46,7 +46,7 @@ fi
 print_status "Starting Rudebot..."
 
 # Run setup script to ensure environment is ready
-./setup.sh
+./scripts/setup.sh
 
 # Activate virtual environment
 source .venv/bin/activate
@@ -60,5 +60,11 @@ if [ -f data/scripts/import_bot_data.py ]; then
     python data/scripts/import_bot_data.py
 fi
 
-print_status "Starting Rudebot bot..."
+print_status "Starting Rudebot bot with console interface..."
+print_status "Console commands: help, stop, restart, status, guilds, reload <cog>"
+
+# Create process tracking
+echo $$ > .bot_pid
+
+# Start bot with console interface
 exec python main.py 

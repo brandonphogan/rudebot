@@ -1,17 +1,21 @@
 """
-Helpers for DJ/music queue management in Rudebot.
-Handles adding/removing songs, advancing queue, and cleaning up old history.
+Music service for Rudebot.
+Handles music queue management, audio downloading, and playback logic.
+Separates business logic from Discord-specific cog implementation.
 """
 import time
+import os
+import yt_dlp
 from typing import List, Optional
 from data.models import SongQueue
 from data.session import get_session
-import tempfile
-import os
-import yt_dlp
 
-# Remove QUEUE_LIMIT_DAYS and history logic
-# Add a function to count total songs for a guild
+
+# Audio storage directory
+AUDIO_DIR = os.path.join('data', 'dj_audio')
+if not os.path.exists(AUDIO_DIR):
+    os.makedirs(AUDIO_DIR)
+
 
 def get_total_song_count(guild_id: str) -> int:
     """
@@ -20,9 +24,6 @@ def get_total_song_count(guild_id: str) -> int:
     with get_session() as session:
         return session.query(SongQueue).filter_by(guild_id=guild_id).count()
 
-AUDIO_DIR = os.path.join('data', 'dj_audio')
-if not os.path.exists(AUDIO_DIR):
-    os.makedirs(AUDIO_DIR)
 
 def download_audio(url_or_query: str) -> str:
     """
@@ -46,6 +47,7 @@ def download_audio(url_or_query: str) -> str:
             print(f"yt-dlp download failed: {e}")
             return None
 
+
 def add_song(guild_id: str, user_id: str, title: str, url: str) -> dict:
     """
     Add a song to the queue for a guild. Downloads audio and stores file path.
@@ -65,6 +67,7 @@ def add_song(guild_id: str, user_id: str, title: str, url: str) -> dict:
         session.commit()
         return {"title": song.title, "id": song.id, "user_id": song.user_id, "url": song.url, "file_path": song.file_path}
 
+
 def remove_song(song_id: int) -> bool:
     """
     Remove a song from the queue by its ID.
@@ -77,12 +80,14 @@ def remove_song(song_id: int) -> bool:
             return True
         return False
 
+
 def get_queue(guild_id: str) -> List[SongQueue]:
     """
     Get the current queue for a guild (not played yet).
     """
     with get_session() as session:
         return session.query(SongQueue).filter_by(guild_id=guild_id).order_by(SongQueue.added_at).all()
+
 
 def mark_played(song_id: int) -> bool:
     """
@@ -91,17 +96,25 @@ def mark_played(song_id: int) -> bool:
     # No longer needed, but kept for compatibility with DJHandler
     return True
 
-# Remove cleanup_old_history and history-related code
-# Cleanup orphaned files not referenced in the DB
-referenced_files = set()
-with get_session() as session:
-    for song in session.query(SongQueue).all():
-        if song.file_path:
-            referenced_files.add(song.file_path)
-for fname in os.listdir(AUDIO_DIR):
-    fpath = os.path.join(AUDIO_DIR, fname)
-    if fpath not in referenced_files:
-        try:
-            os.remove(fpath)
-        except Exception as e:
-            print(f"Failed to delete orphaned audio file {fpath}: {e}") 
+
+def cleanup_orphaned_files():
+    """
+    Clean up audio files that are no longer referenced in the database.
+    """
+    referenced_files = set()
+    with get_session() as session:
+        for song in session.query(SongQueue).all():
+            if song.file_path:
+                referenced_files.add(song.file_path)
+    
+    for fname in os.listdir(AUDIO_DIR):
+        fpath = os.path.join(AUDIO_DIR, fname)
+        if fpath not in referenced_files:
+            try:
+                os.remove(fpath)
+            except Exception as e:
+                print(f"Failed to delete orphaned audio file {fpath}: {e}")
+
+
+# Initialize cleanup on import
+cleanup_orphaned_files()

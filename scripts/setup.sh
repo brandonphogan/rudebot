@@ -2,7 +2,7 @@
 # Script to set up the virtual environment, dependencies, and directories for Rudebot
 set -e  # Exit on any error
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 # Colors for output
 GREEN='\033[0;32m'

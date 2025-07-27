@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Script to restart Rudebot with clean stop/start cycle
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -19,10 +19,16 @@ print_warning() {
 
 print_status "Restarting Rudebot..."
 
+# Check for restart flag from console command
+if [ -f ".restart_requested" ]; then
+    print_status "Console restart detected, removing flag..."
+    rm -f .restart_requested
+fi
+
 # Stop Rudebot if it's running
-if [ -f "stop.sh" ]; then
+if [ -f "scripts/stop.sh" ]; then
     print_status "Stopping Rudebot..."
-    ./stop.sh
+    ./scripts/stop.sh
     sleep 2
 else
     print_warning "Stop script not found, attempting to kill processes..."
@@ -32,4 +38,4 @@ fi
 
 # Start Rudebot
 print_status "Starting Rudebot..."
-./start.sh 
+./scripts/start.sh 

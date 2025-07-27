@@ -1,6 +1,7 @@
 """
-Helpers for formatting, sending, and fetching responses for Rudebot commands and events.
-Includes BotResponse dataclass, response formatting, DB fetchers, and send logic.
+Response service for Rudebot.
+Handles response data fetching, formatting, and Discord message sending.
+Separates business logic from Discord-specific cog implementation.
 """
 import discord
 import logging
@@ -10,6 +11,7 @@ from data.models import Response
 from data.session import get_session
 import random
 
+
 @dataclass
 class BotResponse:
     """
@@ -18,6 +20,7 @@ class BotResponse:
     text: Optional[str] = None
     gif_url: Optional[str] = None
     action: Optional[str] = None
+
 
 def format_response_text(user: Union[discord.Member, discord.User], text: str, emote: str) -> str:
     """
@@ -29,6 +32,7 @@ def format_response_text(user: Union[discord.Member, discord.User], text: str, e
     if emote:
         parts.append(emote)
     return " ".join(parts).strip()
+
 
 async def send_response(
     target: Union[discord.abc.Messageable, discord.ext.commands.Context],
@@ -59,6 +63,7 @@ async def send_response(
     if response.action and logger:
         logger.info(f"Performed action '{response.action}' for {user} in channel {channel_id} (guild {guild_id})")
 
+
 def get_responses(category: str, trigger: str) -> List[Response]:
     """
     Fetch all Response entries from the database for a given category and trigger.
@@ -68,6 +73,7 @@ def get_responses(category: str, trigger: str) -> List[Response]:
         responses = session.query(Response).filter_by(category=category, trigger=trigger).all()
         return responses
 
+
 def get_random_response(category: str, trigger: str) -> Optional[Response]:
     """
     Fetch a random Response entry from the database for a given category and trigger.
@@ -76,4 +82,4 @@ def get_random_response(category: str, trigger: str) -> Optional[Response]:
     responses = get_responses(category, trigger)
     if not responses:
         return None
-    return random.choice(responses) 
+    return random.choice(responses)

@@ -3,16 +3,15 @@ Cog for handling Discord events in Rudebot.
 Currently greets users when they join a voice channel using a random event response.
 """
 from discord.ext import commands
-import discord
 import os
 import random
 from data.models import Response
 from data.session import get_session
-from cogs.helpers.response_helper import BotResponse, send_response
-from cogs.helpers.logger_helper import get_logger
-from cogs.helpers.channel_helper import resolve_text_channel
+from services.response_service import BotResponse, send_response
+from utils.logging_util import get_logger
+from services.channel_service import resolve_text_channel
 
-class EventHandler(commands.Cog):
+class Events(commands.Cog):
     """
     Handles Discord events such as on_ready and on_voice_state_update.
     Sends greetings to users joining voice channels.
@@ -27,7 +26,7 @@ class EventHandler(commands.Cog):
             except ValueError:
                 self.text_channel_id = None
         # Set up a dedicated logger for this cog
-        self.logger = get_logger('event_handler', 'logs/event_handler.log')
+        self.logger = get_logger('events', 'logs/events.log')
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -76,4 +75,4 @@ class EventHandler(commands.Cog):
 
 # Required setup function for loading the cog
 async def setup(bot):
-    await bot.add_cog(EventHandler(bot))
+    await bot.add_cog(Events(bot))

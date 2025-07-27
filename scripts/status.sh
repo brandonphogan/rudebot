@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Script to check Rudebot status, process details, and system health
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 # Colors for output
 RED='\033[0;31m'

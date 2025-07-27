@@ -1,7 +1,6 @@
 """
 Main entry point for Rudebot Discord bot.
 Handles bot setup, cog loading, and startup/shutdown lifecycle.
-Enhanced with improved error handling and logging.
 """
 import discord
 from discord.ext import commands
@@ -11,7 +10,8 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from utils.logging_config import setup_logging
+from utils.logging_util import setup_logging
+from services.console_service import ConsoleService
 
 # Set up centralized logging for the project
 setup_logging()
@@ -52,6 +52,9 @@ async def main():
     # Initialize the bot
     bot = commands.Bot(command_prefix="!", intents=intents)
 
+    # Initialize console service
+    console = ConsoleService(bot)
+
     # Load all cogs from the cogs directory
     loaded_cogs = {}
     for cog_name in discover_cogs():
@@ -69,12 +72,17 @@ async def main():
         logger.info(f"  {cog}: {status}")
 
     logger.info("Rudebot is starting up.")
+    
+    # Start console interface
+    console.start()
+    
     try:
         await bot.start(token)
     except Exception as e:
         logger.error(f"Bot encountered an exception: {e}", exc_info=True)
         raise
     finally:
+        console.stop()
         logger.info("Rudebot is shutting down.")
 
 if __name__ == "__main__":

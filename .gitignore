@@ -177,3 +177,8 @@ cython_debug/
 data/dj_audio/*
 !data/dj_audio/.gitkeep
 
+# Runtime process tracking files
+.bot_pid
+.restart_requested  
+.console_running
+

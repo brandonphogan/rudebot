@@ -7,21 +7,21 @@ import asyncio
 import os
 import discord
 from discord.ext import commands
-from cogs.helpers.dj_helper import add_song, remove_song, get_queue, mark_played, get_total_song_count
-from cogs.helpers.logger_helper import get_logger
+from services.music_service import add_song, remove_song, get_queue, mark_played, get_total_song_count
+from utils.logging_util import get_logger
 
 FFMPEG_OPTIONS = {
     'options': '-vn -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5'
 }
 
-class DJHandler(commands.Cog):
+class Music(commands.Cog):
     """
-    Simplified DJ/music cog for Rudebot.
-    Provides basic music queue management and playback commands.
+    Music cog for Rudebot.
+    Provides music queue management and playback commands.
     """
     def __init__(self, bot):
         self.bot = bot
-        self.logger = get_logger('dj_handler', 'logs/dj_handler.log')
+        self.logger = get_logger('music', 'logs/music.log')
         self.cleanup_task = None
         self.current_song = {}  # guild_id: song_id
         self.is_paused = {}     # guild_id: bool
@@ -265,4 +265,4 @@ class DJHandler(commands.Cog):
 
 # Required setup function for loading the cog
 async def setup(bot):
-    await bot.add_cog(DJHandler(bot)) 
+    await bot.add_cog(Music(bot)) 
